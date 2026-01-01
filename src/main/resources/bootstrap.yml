@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: ibest-attendance-service
+  cloud:
+    nacos:
+      server-addr: ${ibest.nacos.server-addr}
+      username: nacos
+      password: Ibest@1234
+      discovery:
+        enabled: true
+        register-enabled: true
+        server-addr: ${ibest.nacos.server-addr}
+        namespace: ${ibest.nacos.namespace}
+        username: nacos
+        password: Ibest@1234
+        group: DEFAULT_GROUP
+      config:
+        server-addr: ${ibest.nacos.server-addr}
+        namespace: ${ibest.nacos.namespace}
+        username: nacos
+        password: Ibest@1234
+        file-extension: yaml
+        group: DEFAULT_GROUP
+        name: ibest-attendance-service
+        extension-configs:
+          - data-id: jdbc_oa.yml
+            group: DEFAULT_GROUP
+            refresh: true
+          - data-id: common.yml
+            group: DEFAULT_GROUP
+            refresh: true
+        shared-configs:
+          - data-id: common-job.yml
+            group: DEFAULT_GROUP
+            refresh: true
