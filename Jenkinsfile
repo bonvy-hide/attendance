@@ -1,11 +1,15 @@
 pipeline {
-    // 使用任意可用Jenkins节点（可指定具体节点标签，如agent { node { label "jenkins-local" } }）
-    agent any
+    // 需要支持Docker的Jenkins节点
+    agent {
+        any
+        // 确保节点有Docker环境
+        dockerfile true
+    }
 
     // 环境变量：仅配置本地Docker镜像信息，无仓库相关配置
     environment {
         // 自定义本地镜像名称
-        IMAGE_NAME = "my-local-github-app"
+        IMAGE_NAME = "attendance"
         // 镜像标签：使用Jenkins构建号，避免镜像覆盖，便于版本追溯
         IMAGE_TAG = "${BUILD_NUMBER}"
         // 完整本地镜像名称
@@ -29,10 +33,10 @@ pipeline {
         stage('本地构建Docker镜像') {
             steps {
                 echo "开始构建本地Docker镜像：${FULL_IMAGE_NAME}"
-                // docker.build：基于自动拉取的项目中的Dockerfile构建镜像
-                // 若Dockerfile不在项目根目录，可指定路径：-f ./docker/Dockerfile .
-                // 若需传递构建参数，添加：--build-arg JAR_FILE=target/app.jar .
-                docker.build("${FULL_IMAGE_NAME}", ".")
+                // 构建Docker镜像
+                script {
+                    docker.build("${FULL_IMAGE_NAME}", ".")
+                }
                 echo "Docker镜像本地构建完成！镜像已保存至Jenkins服务器"
             }
         }
