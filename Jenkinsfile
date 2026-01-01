@@ -1,10 +1,6 @@
 pipeline {
     // 需要支持Docker的Jenkins节点
-    agent {
-        any
-        // 确保节点有Docker环境
-        dockerfile true
-    }
+    agent any
 
     // 环境变量：仅配置本地Docker镜像信息，无仓库相关配置
     environment {
@@ -34,9 +30,7 @@ pipeline {
             steps {
                 echo "开始构建本地Docker镜像：${FULL_IMAGE_NAME}"
                 // 构建Docker镜像
-                script {
-                    docker.build("${FULL_IMAGE_NAME}", ".")
-                }
+                sh "docker build -t ${FULL_IMAGE_NAME} ."
                 echo "Docker镜像本地构建完成！镜像已保存至Jenkins服务器"
             }
         }
